@@ -1,0 +1,358 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+  background: var(--vscode-editor-background, #1e1e1e);
+  color: var(--vscode-editor-foreground, #d4d4d4);
+  line-height: 1.6;
+}
+
+/* ─── Toolbar ─── */
+#toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  background: var(--vscode-editorGroupHeader-tabsBackground, #252526);
+  border-bottom: 1px solid var(--vscode-editorGroup-border, #444);
+  flex-wrap: wrap;
+}
+
+#toolbar button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--vscode-editor-foreground, #d4d4d4);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 28px;
+  text-align: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#toolbar button:hover {
+  background: var(--vscode-toolbar-hoverBackground, #333);
+  border-color: var(--vscode-toolbar-hoverOutline, #555);
+}
+
+#toolbar button:active {
+  background: var(--vscode-toolbar-activeBackground, #444);
+}
+
+#toolbar button#btn-toggle {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--vscode-textLink-foreground, #3794ff);
+}
+
+#toolbar .separator {
+  width: 1px;
+  height: 20px;
+  background: var(--vscode-editorGroup-border, #444);
+  margin: 0 4px;
+}
+
+/* FIX #4: Toolbar actions hidden in preview mode, shown in source mode via CSS class */
+.toolbar-action {
+  display: none !important;
+}
+
+body.source-mode .toolbar-action {
+  display: initial !important;
+}
+
+body.source-mode .separator.toolbar-action {
+  display: block !important;
+}
+
+/* FIX #7: Checked state via CSS class (for targeted checkbox toggle) */
+#rich-view li.checked {
+  color: rgba(255, 255, 255, 0.35);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ─── Editor container ─── */
+#editor-container {
+  height: calc(100vh - 42px);
+  overflow: hidden;
+}
+
+/* ─── Rich view ─── */
+#rich-view {
+  display: none;
+  padding: 24px 48px;
+  max-width: 900px;
+  margin: 0 auto;
+  height: 100%;
+  overflow-y: auto;
+}
+
+#rich-view.active {
+  display: block;
+}
+
+/* ─── Source view ─── */
+#source-view {
+  display: none;
+  width: 100%;
+  height: 100%;
+  padding: 24px 48px;
+  background: var(--vscode-editor-background, #1e1e1e);
+  color: var(--vscode-editor-foreground, #d4d4d4);
+  border: none;
+  outline: none;
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  tab-size: 2;
+}
+
+#source-view.active {
+  display: block;
+}
+
+/* ─── Markdown rendered content ─── */
+#rich-view h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0.8em 0 0.4em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--vscode-editorGroup-border, #444);
+  color: var(--vscode-editor-foreground, #e0e0e0);
+}
+
+#rich-view h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0.7em 0 0.3em;
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid var(--vscode-editorGroup-border, #333);
+}
+
+#rich-view h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin: 0.6em 0 0.3em;
+}
+
+#rich-view h4, #rich-view h5, #rich-view h6 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0.5em 0 0.2em;
+}
+
+#rich-view p {
+  margin: 0.6em 0;
+}
+
+#rich-view a {
+  color: var(--vscode-textLink-foreground, #3794ff);
+  text-decoration: none;
+}
+
+#rich-view a:hover {
+  text-decoration: underline;
+}
+
+#rich-view strong {
+  font-weight: 700;
+  color: var(--vscode-editor-foreground, #e0e0e0);
+}
+
+#rich-view em {
+  font-style: italic;
+}
+
+#rich-view del {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Code */
+#rich-view code {
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  background: var(--vscode-textCodeBlock-background, #2d2d2d);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+#rich-view pre {
+  background: var(--vscode-textCodeBlock-background, #1a1a2e);
+  border: 1px solid var(--vscode-editorGroup-border, #333);
+  border-radius: 6px;
+  padding: 16px;
+  margin: 1em 0;
+  overflow-x: auto;
+}
+
+#rich-view pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Blockquote */
+#rich-view blockquote {
+  border-left: 4px solid var(--vscode-textLink-foreground, #3794ff);
+  margin: 1em 0;
+  padding: 8px 16px;
+  background: rgba(55, 148, 255, 0.06);
+  border-radius: 0 6px 6px 0;
+}
+
+#rich-view blockquote p {
+  margin: 0.3em 0;
+}
+
+/* Lists */
+#rich-view ul, #rich-view ol {
+  margin: 0.6em 0;
+  padding-left: 2em;
+}
+
+#rich-view li {
+  margin: 0.3em 0;
+}
+
+#rich-view li > ul, #rich-view li > ol {
+  margin: 0.2em 0;
+}
+
+/* Checklist — remove bullets and style as task items */
+#rich-view ul:has(> li > input[type="checkbox"]) {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.6em 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#rich-view li:has(> input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.15s;
+  margin: 0;
+}
+
+#rich-view li:has(> input[type="checkbox"]) {
+  cursor: pointer;
+}
+
+#rich-view li:has(> input[type="checkbox"]):hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+#rich-view input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+#rich-view input[type="checkbox"]:hover {
+  border-color: var(--vscode-textLink-foreground, #3794ff);
+  background: rgba(55, 148, 255, 0.08);
+}
+
+#rich-view input[type="checkbox"]:checked {
+  background: var(--vscode-textLink-foreground, #3794ff);
+  border-color: var(--vscode-textLink-foreground, #3794ff);
+}
+
+#rich-view input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Checked item text gets dimmed with strikethrough */
+#rich-view li:has(> input[type="checkbox"]:checked) {
+  color: rgba(255, 255, 255, 0.35);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Tables */
+#rich-view table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+#rich-view th, #rich-view td {
+  border: 1px solid var(--vscode-editorGroup-border, #444);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+#rich-view th {
+  background: var(--vscode-editorGroupHeader-tabsBackground, #252526);
+  font-weight: 600;
+}
+
+#rich-view tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Horizontal rule */
+#rich-view hr {
+  border: none;
+  height: 1px;
+  background: var(--vscode-editorGroup-border, #444);
+  margin: 1.5em 0;
+}
+
+/* Images */
+#rich-view img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 0.5em 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vscode-scrollbarSlider-background, #555);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vscode-scrollbarSlider-hoverBackground, #777);
+}
